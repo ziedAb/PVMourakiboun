@@ -1,0 +1,6 @@
+{
+  "name": "Parties",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Parties.js"
+}

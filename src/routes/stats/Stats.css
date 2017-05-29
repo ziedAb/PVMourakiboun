@@ -1,0 +1,55 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+@import '../../components/variables.css';
+@import '../../components/sharedComponents.css';
+@import '../../routes/Grid.css';
+
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+  min-height: 370px;
+}
+
+.container {
+  padding: 0 0 40px;
+  min-height: 380px;
+}
+
+.col{
+  padding-left: 0px;
+}
+
+.extract{
+  width: 100%;
+}
+
+.select{
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 20px;
+  border-width: 3px;
+  direction: ltr;
+}
+
+.head{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.tocorrect{
+  cursor: pointer;
+  padding: 1px;
+  border: solid 2px grey;
+  border-radius: 30px;
+  text-align: center;
+}
+
+.tocorrect:hover{
+  opacity: 0.5;
+}

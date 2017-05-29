@@ -26,7 +26,7 @@ class CheckboxInput extends React.Component {
 
   render() {
     return (
-      <div className={s.formGroup} {...this.props}>
+      <div className={`${s.formGroup} ${ this.props.className }`}>
         <input
           className={s.input}
           id={this.props.id}

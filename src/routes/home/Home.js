@@ -10,62 +10,113 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
-import NumberInput from '../numberInput';
-import CheckboxInput from '../CheckboxInput';
-import TextInput from '../TextInput';
+import GeneratedForm from '../GeneratedForm';
 import SelectOffice from '../SelectOffice';
+import history from '../../core/history';
+import Auth from '../../core/Auth';
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showForm: false,
+      tocorrect: false,
+      station_name: "",
+      circonscription: "",
+      circonscriptionObject:{},
+      officeObject: {},
+      circonscriptionOffice: '',
+      delegation: '',
+      subDelegation: '',
+      center: '',
+      station: ''
+    }
+
+    this.updateStates = this.updateStates.bind(this);
+    this.handleOfficeChange = this.handleOfficeChange.bind(this);
+    this.handleSearchInput = this.handleSearchInput.bind(this);
+  }
+
+  componentDidMount(){
+    if (Auth.isUserAuthenticated()){
+      if (localStorage.center !== undefined){
+        this.setState({
+          circonscriptionOffice: localStorage.circonscriptionOffice,
+          delegation: localStorage.delegation,
+          subDelegation: localStorage.subDelegation,
+          center: localStorage.center,
+          station: localStorage.station,
+          tocorrect : localStorage.tocorrect == 'true' ? true : false
+        });
+
+        //clean localStorage
+        localStorage.removeItem('circonscriptionOffice');
+        localStorage.removeItem('delegation');
+        localStorage.removeItem('subDelegation');
+        localStorage.removeItem('center');
+        localStorage.removeItem('station');
+        localStorage.removeItem('tocorrect');
+      }
+    }
+    else{
+      history.push("/login");
+    }
+  }
+
+  handleSearchInput(value, name){
+    this.setState({ [name]: value });
+  }
+
+  updateStates(show, tocorrect){
+    this.setState({
+      showForm: show,
+      tocorrect: tocorrect
+    });
+  }
+
+  handleOfficeChange(office, tocorrect){
+    fetch('/api/Circonscription/' + office.circonscription , {
+      method: 'GET',
+      headers: {'Content-Type':'application/json'}
+    })
+    .then(res => res.json())
+    .then((json) => {
+      this.setState({
+        showForm: true,
+        station_name:office.station_name,
+        circonscription: office.circonscription,
+        circonscriptionObject: json,
+        officeObject: office
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  }
 
   render() {
     return (
       <div className={s.root}>
         <div className={s.container}>
           <h1 className={s.sectionTitle}>مركز الاقتراع</h1>
-          <SelectOffice />
-        </div>
-        <div className={s.container}>
-          <div className={s.row}>
-            <h2 className={`${ s.col } ${ s.school }`}>
-              <span className={s.circonscription}>TUNIS2</span>
-              م إبتدائية المنزه التاسع - المنار
-            </h2>
-          </div>
-          <div className={s.row}>
-            <CheckboxInput className={`${ s.col } ${ s.oneThird }`} id="testcheck" name="testcheck" label="يوجد ختم الهيئة؟"/>
-            <TextInput className={`${ s.col } ${ s.oneSix }`} id="testText" name="testText" label="توقيت بداية الفرز"/>
-            <div className={`${ s.col } ${ s.oneSix }`} > </div>
-            <TextInput className={`${ s.col } ${ s.oneSix }`} id="testText" name="testText" label="توقيت ختم الفرز"/>
-            <div className={`${ s.col } ${ s.oneSix }`} > </div>
-          </div>
-
-          <h1 className={s.sectionTitle}>معلومات غريبة</h1>
-
-          <div className={s.row}>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="عدد الناخبين المرسمين بمكتب الاقتراع"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="أ- عدد الناخبين الذين امضوا في قائمة الناخبين"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="- عدد أوراق التصويت المسلمة لمكتب الاقتراع"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ج- عدد أوراق التصويت التالفة"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="د- عدد أوراق التصويت الباقية"/>
-          </div>
-
-          <div className={s.row}>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ه- عدد أوراق التصويت التالفة + عدد أوراق التصويت الباقية"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="و- عدد أوراق التصويت المستخرجة من الصندوق"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ز=ه+و"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ح- المطابقة 1 : الفارق العددي بين ب و- ز"/>
-            <NumberInput className={`${ s.col } ${ s.oneFifth }`} maxLength="3" id="test" name="testname" label="ط- المطابقة 2 : الفارق العددي بين أ و و"/>
-          </div>
+          <SelectOffice officeChange={this.handleOfficeChange}
+            handleSearchInput = {this.handleSearchInput}
+            circonscriptionOffice =  {this.state.circonscriptionOffice}
+            delegation = {this.state.delegation}
+            subDelegation = {this.state.subDelegation}
+            center = {this.state.center}
+            station = {this.state.station}
+            tocorrect={this.state.tocorrect}/>
         </div>
 
-        <div className={s.container}>
-          <h1 className={s.sectionTitle}>القائمات</h1>
-          <div className={s.row}>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="1 ـ البناء الوطني"/>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="الشعب يريد"/>
-            <NumberInput className={`${ s.col } ${ s.oneThird }`} maxLength="3" id="test" name="testname" label="البناء الوطني"/>
-          </div>
-        </div>
+        <GeneratedForm station_name={this.state.station_name}
+        circonscription={this.state.circonscription}
+        circonscriptionObject={this.state.circonscriptionObject}
+        showForm={this.state.showForm}
+        tocorrect={this.state.tocorrect}
+        updateStates = {this.updateStates}
+        office = {this.state.officeObject} />
       </div>
     );
   }

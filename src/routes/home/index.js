@@ -11,6 +11,7 @@ import React from 'react';
 import Home from './Home';
 import fetch from '../../core/fetch';
 import Layout from '../../components/Layout';
+import Auth from '../../core/Auth';
 
 export default {
 
@@ -18,7 +19,7 @@ export default {
 
   action() {
     return {
-      title: 'React Starter Kit',
+      title: 'Mourakiboun PV editor',
       component: <Layout><Home /></Layout>,
     };
   },

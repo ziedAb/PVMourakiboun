@@ -12,8 +12,13 @@
   margin: 6px 0 0;
 }
 
+.linkContainer{
+  display: inline-block;
+}
+
 .link {
   display: inline-block;
+  cursor: pointer;
   padding: 3px 8px;
   text-decoration: none;
   font-size: 1.125em; /* ~18px */

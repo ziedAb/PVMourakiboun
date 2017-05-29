@@ -14,6 +14,10 @@
   margin-top: 35px;
 }
 
+.ltr{
+  direction: ltr;
+}
+
 .col{
   display: inline-block;
   padding-left: 10px;
@@ -42,6 +46,10 @@
 
 .oneSix{
   width: 16.66%;
+}
+
+.oneTen{
+  width: 10%;
 }
 
 .container {

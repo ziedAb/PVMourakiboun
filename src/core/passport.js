@@ -15,7 +15,7 @@
 
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { User, UserLogin, UserClaim, UserProfile } from '../data/models';
+import { UserOld, UserLogin, UserClaim, UserProfile } from '../data/models';
 import { auth as config } from '../config';
 
 /**
@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy({
         // Sign in with that account or delete it, then link it with your current account.
         done();
       } else {
-        const user = await User.create({
+        const user = await UserOld.create({
           id: req.user.id,
           email: profile._json.email,
           logins: [
@@ -69,7 +69,7 @@ passport.use(new FacebookStrategy({
         });
       }
     } else {
-      const users = await User.findAll({
+      const users = await UserOld.findAll({
         attributes: ['id', 'email'],
         where: { '$logins.name$': loginName, '$logins.key$': profile.id },
         include: [
@@ -84,13 +84,13 @@ passport.use(new FacebookStrategy({
       if (users.length) {
         done(null, users[0]);
       } else {
-        let user = await User.findOne({ where: { email: profile._json.email } });
+        let user = await UserOld.findOne({ where: { email: profile._json.email } });
         if (user) {
           // There is already an account using this email address. Sign in to
           // that account and link it with Facebook manually from Account Settings.
           done(null);
         } else {
-          user = await User.create({
+          user = await UserOld.create({
             email: profile._json.email,
             emailConfirmed: true,
             logins: [

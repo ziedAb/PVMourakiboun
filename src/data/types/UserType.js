@@ -15,7 +15,7 @@ import {
 } from 'graphql';
 
 const UserType = new ObjectType({
-  name: 'User',
+  name: 'UserOld',
   fields: {
     id: { type: new NonNull(ID) },
     email: { type: StringType },

@@ -22,7 +22,7 @@ import App from './components/App';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
-import passport from './core/passport';
+import passport from 'passport';
 import router from './core/router';
 import models from './data/models';
 import schema from './data/schema';
@@ -65,18 +65,6 @@ app.use(passport.initialize());
 if (__DEV__) {
   app.enable('trust proxy');
 }
-app.get('/login/facebook',
-  passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false }),
-);
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
-  },
-);
 
 //
 // Register API middleware
@@ -88,9 +76,29 @@ app.use('/graphql', expressGraphQL(req => ({
   pretty: __DEV__,
 })));
 
+// load passport strategies
+const localSignupStrategy = require('./data/passport/local-signup');
+const localLoginStrategy = require('./data/passport/local-login');
+passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
+//
+//
+// // pass the authorization checker middleware
+// const authCheckMiddleware = require('./data/middleware/auth-check');
+// app.use('/api', authCheckMiddleware);
+
+
 // initialize routes
 app.use('/api', require('./data/api/api'));
-app.use('/api', require('./data/api/getOffice'));
+app.use('/api', require('./data/api/PV'));
+app.use('/api', require('./data/api/Office'));
+app.use('/api', require('./data/api/Circonscription'));
+app.use('/api', require('./data/api/User'));
+app.use('/api', require('./data/api/Suivi'));
+app.use('/api', require('./data/api/Stats'));
+app.use('/api', require('./data/api/Rout'));
+app.use('/api', require('./data/api/OfficeError'));
+app.use('/auth', require('./data/api/auth'));
 
 //
 // Register server-side rendering middleware

@@ -8,37 +8,10 @@
  */
 
 @import '../../components/variables.css';
+@import '../../components/sharedComponents.css';
 @import '../Grid.css';
 
 .root {
   padding-left: 20px;
   padding-right: 20px;
-}
-
-.submit{
-  display: block;
-  box-sizing: border-box;
-  margin: 0 auto;
-  margin-top: 25px;
-  padding: 10px 16px;
-  width: 150px;
-  outline: 0;
-  border: 1px solid var(--blue);
-  border-radius: 0;
-  background: var(--blue);
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-size: 18px;
-  line-height: 1.3333333;
-  cursor: pointer;
-}
-
-.submit:hover {
-  background: rgba(54, 50, 119, 0.8);
-}
-
-.submit:focus {
-  border-color: #0074c2;
-  box-shadow: 0 0 8px rgba(0, 116, 194, 0.6);
 }

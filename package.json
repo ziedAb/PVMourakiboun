@@ -14,6 +14,7 @@
   ],
   "dependencies": {
     "babel-polyfill": "^6.23.0",
+    "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "classnames": "^2.2.5",
@@ -27,11 +28,13 @@
     "history": "^4.6.1",
     "isomorphic-style-loader": "^1.1.0",
     "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.17.4",
     "mongoose": "^4.9.5",
     "node-fetch": "^1.6.3",
     "normalize.css": "^6.0.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
+    "passport-local": "^1.0.0",
     "pretty-error": "^2.1.0",
     "query-string": "^4.3.2",
     "react": "^15.5.3",
@@ -40,6 +43,7 @@
     "source-map-support": "^0.4.14",
     "sqlite3": "^3.1.8",
     "universal-router": "^3.0.0",
+    "validator": "^7.0.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
